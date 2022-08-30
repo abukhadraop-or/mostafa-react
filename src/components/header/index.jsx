@@ -4,8 +4,8 @@ import { FaBell } from "react-icons/fa";
 import { TbSearch } from "react-icons/tb";
 import { IoPersonCircle } from "react-icons/io5";
 import { GoThreeBars } from "react-icons/go";
-import HeaderBlock from "components/headerComponents/headerBlock";
-import HeaderButtonList from "components/headerComponents/headerButtonList";
+import HeaderBlock from "components/headerBlock";
+import HeaderButtonList from "components/headerButtonList";
 import {
   StyledHeader,
   StyledLogoImg,
@@ -19,7 +19,7 @@ import {
   StyledDrawerTitle,
   StyledDrawerItem,
   StyledWrapper,
-} from "components/headerComponents/header/header.styles";
+} from "components/header/header.styles";
 
 /**
  * The Header component that has the main routes.
@@ -82,7 +82,7 @@ function Header() {
       const currentScroll = window.pageYOffset;
 
       if (currentScroll > lastScroll) {
-        setHeaderTransform("translate(0px, -100%)");
+        setHeaderTransform("translate(0%, -100%)");
       } else if (currentScroll < lastScroll) {
         setHeaderTransform("none");
       }

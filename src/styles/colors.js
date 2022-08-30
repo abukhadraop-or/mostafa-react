@@ -7,6 +7,8 @@ const colors = {
   lightGray: "#ced3db",
   black: "#000",
   white: "#fff",
+  blurStartWhite: "#000000aa",
+  blurEndWhite: "#00000077"
 };
 
 export default colors;

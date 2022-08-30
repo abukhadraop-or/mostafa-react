@@ -13,20 +13,20 @@ export const StyledHeaderButton = styled.button`
   align-items: center;
   position: relative;
   display: ${(props) => (props.mobile ? "flex" : "none")};
-  margin-left: ${(props) => (props.responsiveMargin ? "5px" : "0px")};
+  margin-left: ${(props) => (props.responsiveMargin ? "0.3125rem" : "0rem")};
 
   ${media.desktop`
     display: ${(props) => (props.desktop ? "flex" : "none")};
-    margin-left: ${(props) => (props.responsiveMargin ? "25px" : "0px")};
+    margin-left: ${(props) => (props.responsiveMargin ? "1.5625rem" : "0rem")};
   `}
 `;
 
 export const StyledIcon = styled.div`
-  width: ${(props) => props.size.mobile}px;
-  height: ${(props) => props.size.mobile}px;
+  width: ${(props) => props.size.mobile * 0.063}rem;
+  height: ${(props) => props.size.mobile * 0.063}rem;
 
   ${media.desktop`
-    width: ${(props) => props.size.desktop}px;
-    height: ${(props) => props.size.desktop}px;
+    width: ${(props) => props.size.desktop * 0.063}rem;
+    height: ${(props) => props.size.desktop * 0.063}rem;
   `}
 `;

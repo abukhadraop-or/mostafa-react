@@ -1,5 +1,4 @@
 import React from "react";
-import FooterContainer from "components/footerComponents/footerContainer";
 import {
   StyledFooter,
   StyledNav,
@@ -8,7 +7,9 @@ import {
   StyledUnorderedList,
   StyledListItem,
   StyledFooterSection,
-} from "components/footerComponents/footer/footer.styles";
+  StyledContainer,
+  StyledTitleContainer,
+} from "components/footer/footer.styles";
 
 
 /**
@@ -23,7 +24,7 @@ function Footer() {
   return (
     <StyledFooter>
       <StyledNav>
-        <FooterContainer>
+        <StyledContainer>
           <StyledUnorderedList>
             <StyledListItem>
               <StyledImg src={logoImage} alt="The Movie Database (TMDB)" />
@@ -32,42 +33,46 @@ function Footer() {
               <StyledButton>Hi User!</StyledButton>
             </StyledListItem>
           </StyledUnorderedList>
-        </FooterContainer>
+        </StyledContainer>
 
-        <FooterContainer title="The Basics">
+        <StyledContainer>
+          <StyledTitleContainer>The Basics</StyledTitleContainer>
           <StyledUnorderedList>
             <StyledListItem>About TMDB</StyledListItem>
             <StyledListItem>Contact Us</StyledListItem>
             <StyledListItem>Support Forums</StyledListItem>
-            <StyledListItem>API"</StyledListItem>
+            <StyledListItem>API</StyledListItem>
             <StyledListItem>System Status</StyledListItem>
           </StyledUnorderedList>
-        </FooterContainer>
+        </StyledContainer>
 
-        <FooterContainer title="Get Involved">
+        <StyledContainer>
+          <StyledTitleContainer>Get Involved</StyledTitleContainer>
           <StyledUnorderedList>
             <StyledListItem>Contribution Bible</StyledListItem>
             <StyledListItem>Add New Movie</StyledListItem>
             <StyledListItem>Add New TV Show</StyledListItem>
           </StyledUnorderedList>
-        </FooterContainer>
+        </StyledContainer>
 
-        <FooterContainer title="Community">
+        <StyledContainer>
+        <StyledTitleContainer>Community</StyledTitleContainer>
           <StyledUnorderedList>
             <StyledListItem>Guidelines</StyledListItem>
             <StyledListItem>Discussions</StyledListItem>
             <StyledListItem>Leaderboard</StyledListItem>
             <StyledListItem>Twitter</StyledListItem>
           </StyledUnorderedList>
-        </FooterContainer>
+        </StyledContainer>
 
-        <FooterContainer title="Community">
+        <StyledContainer>
+        <StyledTitleContainer>Community</StyledTitleContainer>
           <StyledUnorderedList>
             <StyledListItem>Terms of Use</StyledListItem>
             <StyledListItem>API Terms of Use</StyledListItem>
             <StyledListItem>Privacy Policy</StyledListItem>
           </StyledUnorderedList>
-        </FooterContainer>
+        </StyledContainer>
       </StyledNav>
 
       <StyledFooterSection>Build 13e0a72 (4183)</StyledFooterSection>

@@ -25,11 +25,11 @@ const swift = keyframes`
 
 export const StyledLinearProgress = styled.div`
   width: 100vw;
-  height: 6px;
+  height: 0.375rem;
   position: fixed;
   background: ${colors.skiBlue};
-  top: 0px;
-  left: 0px;
+  top: 0rem;
+  left: 0rem;
   z-index: 22;
 
   animation: ${swift} 1.5s linear infinite;

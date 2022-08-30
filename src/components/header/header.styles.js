@@ -28,8 +28,8 @@ export const StyledHeader = styled.header`
   transform: ${(props) => props.transform};
 
   ${media.desktop`
-    padding-right: 20px;
-    padding-left: 25px;
+    padding-right: 1.25rem;
+    padding-left: 1.5625rem;
   `}
 `;
 

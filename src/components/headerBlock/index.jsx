@@ -1,32 +1,24 @@
 import React from "react";
 import { IconContext } from "react-icons";
 import PropTypes from "prop-types";
-import { StyledWrapper } from "components/headerComponents/header/header.styles";
+import { StyledWrapper } from "components/header/header.styles";
 import {
   StyledHeaderButton,
   StyledIcon,
-} from "components/headerComponents/headerBlock/header-block.styles";
+} from "components/headerBlock/header-block.styles";
 
 /**
  * A wrapper button for each item in the header.
  *
  * @param {func} onMouseEnter A custom function to bind the action of hovering to the component.
- *
  * @param {func} onMouseLeave A custom function to bind the action of moving the cursor away to the component.
- *
  * @param {bool} desktop A boolean that controls showing/hiding the component in the desktop mode.
- *
  * @param {bool} mobile A boolean that controls showing/hiding the component in the mobile mode.
- *
  * @param {bool} responsiveMargin A boolean that controls adding mobile-responsive margins to selected components.
- *
  * @param {bool} isIcon A boolean that controls adding a wrapper for (Icon) components.
- *
- * @param {number} size A number that specifies the size of the icon, if (isIcon) was true.
- *
+ * @param {object} size A number that specifies the size of the icon, if (isIcon) was true.
  * @param {string} color A string that specifies the color of the icon, if (isIcon) was true.
- *
- * @param {StyledWrapper} children A styled component (unordered list) that has the contents of the block.
+ * @param {Element} children A styled component (unordered list) that has the contents of the block.
  *
  * @return {Element} A styled component (button).
  */
@@ -68,7 +60,7 @@ HeaderBlock.defaultProps = {
   onMouseLeave: () => {},
   responsiveMargin: false,
   isIcon: false,
-  size: 0,
+  size: { mobile: 15, desktop: 17 },
   color: "white",
 };
 
@@ -79,9 +71,9 @@ HeaderBlock.propTypes = {
   mobile: PropTypes.bool.isRequired,
   responsiveMargin: PropTypes.bool,
   isIcon: PropTypes.bool,
-  size: PropTypes.number,
+  size: PropTypes.object,
   color: PropTypes.string,
-  children: StyledWrapper,
+  children: PropTypes.element,
 };
 
 export default HeaderBlock;

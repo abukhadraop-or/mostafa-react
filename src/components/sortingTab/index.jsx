@@ -9,19 +9,15 @@ import {
   StyledSelections,
   StyledSelectionItem,
   StyledButtonText,
-} from "components/leftPaletteComponents/sortingTab/sorting-tab.styles";
+} from "components/sortingTab/sorting-tab.styles";
 
 /**
  * A container that represents the sorting box in the left palette.
  *
- * @param {React.MutableRefObject} sortBoxRef A reference object to reach and control the box with the sorting technique selection.
- *
+ * @param {object} sortBoxRef A reference object to reach and control the box with the sorting technique selection.
  * @param {string} sortBoxSelection A string that represents the current selection of the sorting technique.
- *
  * @param {func} setSortBoxSelection A function that changes the current sorting technique selection from the box.
- *
  * @param {func} setSortedBy A function that changes global sorting technique state.
- *
  * @param {func} setSearchButtonActive A function that changes the state of the search button (enabled/disabled).
  *
  * @return {Element} A styled component (div).
@@ -88,11 +84,11 @@ function SortTabContents({
 SortTabContents.defaultProps = {};
 
 SortTabContents.propTypes = {
-  sortBoxRef: React.MutableRefObject,
+  sortBoxRef: PropTypes.object,
   sortBoxSelection: PropTypes.string,
-  setSortBoxSelection: React.Dispatch < React.SetStateAction,
-  setSortedBy: React.Dispatch < React.SetStateAction,
-  setSearchButtonActive: React.Dispatch < React.SetStateAction,
+  setSortBoxSelection: PropTypes.func,
+  setSortedBy: PropTypes.func,
+  setSearchButtonActive: PropTypes.func,
 };
 
 export default SortTabContents;

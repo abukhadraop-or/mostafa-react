@@ -1,35 +1,35 @@
 import React, { useState, useRef } from "react";
-import PaletteSlider from "components/leftPaletteComponents/paletteSlider";
-import SortTabContents from "components/leftPaletteComponents/sortingTab";
-import { useSelector, useDispatch } from "react-redux";
-import { moviesActions } from "store/store";
+import PaletteSlider from "components/paletteSlider";
+import SortTabContents from "components/sortingTab";
 import getData from "services/get-data";
 import PropTypes from "prop-types";
 import {
   StyledButton,
   StyledLeftPalette,
-} from "components/leftPaletteComponents/leftPalette/left-palette.styles";
-
+} from "components/leftPalette/left-palette.styles";
 
 /**
  * A container that represents the left palette that has all tools (sort, filter, ...).
  *
  * @param {func} setIsFetchingData A function that change the state of fetching data when the (getData) function is being called.
- *
  * @param {string} baseURL A string that represents the base segment of the main URL for the TMDB website.
- *
  * @param {string} apiKey A string that has the API key from TMDB.
- *
  * @param {string} sortedBy A string that represents state of the sorting technique of the movies.
- *
  * @param {func} setSortedBy A function that changes the state of the sorting technique of the movies.
+ * @param {object} popularMoviesList An object that stores the list of movies and the current page from the API.
+ * @param {func} setPopularMoviesList A function that changes the list of movies and the current page from the API.
  *
  * @return {Element} A styled component (section).
  */
-function Palette({ setIsFetchingData, baseURL, apiKey, sortedBy, setSortedBy }) {
-  const disptach = useDispatch();
-  const moviesPage = useSelector((state) => state.movies.moviesPage);
-
+function Palette({
+  setIsFetchingData,
+  baseURL,
+  apiKey,
+  sortedBy,
+  setSortedBy,
+  popularMoviesList,
+  setPopularMoviesList,
+}) {
   const sortBoxRef = useRef(null);
   const [searchButtonActive, setSearchButtonActive] = useState(false);
   const [sortBoxSelection, setSortBoxSelection] = useState(
@@ -71,12 +71,25 @@ function Palette({ setIsFetchingData, baseURL, apiKey, sortedBy, setSortedBy }) 
 
   const changeSearchHandler = () => {
     setIsFetchingData(true);
-    disptach(moviesActions.resetMoviesPage());
+    setPopularMoviesList((prev) => ({
+      movieList: prev.movieList,
+      moviesPage: 1,
+    }));
 
     setTimeout(async () => {
-      const data = await getData(baseURL, apiKey, sortedBy, moviesPage);
+      const data = await getData(
+        baseURL,
+        apiKey,
+        sortedBy,
+        popularMoviesList.moviesPage
+      );
+
       setIsFetchingData(false);
-      disptach(moviesActions.setMovieList(data));
+
+      setPopularMoviesList((prev) => ({
+        movieList: data,
+        moviesPage: prev.moviesPage,
+      }));
     }, 500);
   };
 
@@ -121,11 +134,13 @@ function Palette({ setIsFetchingData, baseURL, apiKey, sortedBy, setSortedBy }) 
 Palette.defaultProps = {};
 
 Palette.propTypes = {
-  setIsFetchingData: React.Dispatch<React.SetStateAction,
+  setIsFetchingData: PropTypes.func,
   baseURL: PropTypes.string.isRequired,
   apiKey: PropTypes.string.isRequired,
   sortedBy: PropTypes.string.isRequired,
-  setSortedBy: React.Dispatch<React.SetStateAction,
+  setSortedBy: PropTypes.func,
+  popularMovies: PropTypes.object.isRequired,
+  setPopularMovies: PropTypes.func.isRequired,
 };
 
 export default Palette;

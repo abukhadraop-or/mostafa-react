@@ -6,17 +6,14 @@ import {
   StyledPaletteMainBox,
   StyledPaletteUpperBox,
   StyledHiddenBox,
-} from "components/leftPaletteComponents/paletteSlider/palette-slider.styles";
+} from "components/paletteSlider/palette-slider.styles";
 
 /**
  * A component that creates a slider box in the left palette that opens when it is being clicked.
  *
  * @param {string} title The title of the box.
- *
  * @param {bool} isOpened A boolean that refers to the state of the current box (opened/closed).
- *
  * @param {func} sliderClickHandler A function that opens the box and change its relevant sates.
- *
  * @param {Element} children A custom component for each box.
  * 
  * @return {Element} A styled component (div).

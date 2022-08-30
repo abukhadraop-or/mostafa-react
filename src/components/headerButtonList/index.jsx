@@ -4,15 +4,13 @@ import {
   StyledItemsList,
   StyledItem,
   StyledListContainer,
-} from "components/headerComponents/headerButtonList/header.button.list.styles";
+} from "components/headerButtonList/header.button.list.styles";
 
 /**
  * A container to represent the hidden list that will be visible when hovering over the header main routes.
  * 
  * @param {string} mainTitle The title of the targeted list.
- * 
  * @param {object} items An array of objects where each one has the item title and its (onClick) function.
- * 
  * @param {func} handleButtonHovered A function to show/hide the whole list when the main title is hovered.
  * 
  * @return {Element} A styled component (div).
