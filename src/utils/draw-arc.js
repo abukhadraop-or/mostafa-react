@@ -4,15 +4,11 @@ import PropTypes from "prop-types";
  * A function that creates the shape of the rating bar for each movie.
  *
  * @param {number} x The x-offset of the arc.
- *
  * @param {number} y The y-offset of the arc.
- *
  * @param {number} radius The radius of the arc.
- * 
  * @param {number} startAngle The angle where the arc starts.
- * 
  * @param {number} endAngle The angle where the arc ends.
- * 
+ *
  * @return {string} The formatted string to dray the required arc inside (path) tag in the (svg) element.
  */
 function DrawArc(x, y, radius, startAngle, endAngle) {
@@ -52,9 +48,6 @@ function DrawArc(x, y, radius, startAngle, endAngle) {
 
   return d;
 }
-
-
-DrawArc.defaultProps = {};
 
 DrawArc.propTypes = {
   x: PropTypes.number.isRequired,

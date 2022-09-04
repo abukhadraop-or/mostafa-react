@@ -1,7 +1,9 @@
+import PropTypes from 'prop-types';
+
 /**
  * A function that reformats the date from (DD/MM/YYYY) to (DD/month/YYYY).
  *
- * @param {Date} date A string that represents the base segment of the main URL for the TMDB website.
+ * @param {string} date A string representing the date.
  * 
  * @return {string} The new formatted date.
  */
@@ -10,15 +12,12 @@ function DateFormater(date) {
   const day = dateObj.getDate();
   const month = dateObj.toLocaleString("default", { month: "long" });
   const year = dateObj.getFullYear();
-  const releaseDate = `${day} ${month} ${year}`;
-
-  return releaseDate;
+  
+  return `${day} ${month} ${year}`;
 }
 
-DateFormater.defaultProps = {};
-
 DateFormater.propTypes = {
-  date: Date,
+  date: PropTypes.string.isRequired,
 };
 
 export default DateFormater;

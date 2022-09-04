@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { media } from "styles/media-query";
+import { mq } from "styles/media-query";
 import colors from "styles/colors";
 
 export const StyledFooter = styled.footer`
@@ -18,7 +18,7 @@ export const StyledFooter = styled.footer`
     ${colors.darkBlue} 70%
   );
 
-  ${media.desktop`
+  ${mq.desktop`
     align-items: center;
     padding-left: 0rem;
   `}
@@ -36,7 +36,7 @@ export const StyledNav = styled.nav`
   padding-top: 0rem;
   padding-bottom: 0rem;
 
-  ${media.desktop`
+  ${mq.desktop`
   flex-direction: row;
     padding-top: 5rem;
   `}
@@ -46,7 +46,7 @@ export const StyledImg = styled.img`
   width: 8.125rem;
   height: 5.875rem;
 
-  ${media.desktop`
+  ${mq.desktop`
     display: flex;
   `}
 
@@ -67,7 +67,7 @@ export const StyledButton = styled.a`
   margin-top: 3.125rem;
   margin-bottom: 1.25rem;
 
-  ${media.desktop`
+  ${mq.desktop`
     margin-bottom: 3.125rem;
   `}
 `;
@@ -99,7 +99,7 @@ export const StyledFooterSection = styled.section`
   font-size: 0.7rem;
   margin-bottom: 3.125rem;
 
-  ${media.desktop`
+  ${mq.desktop`
     margin-bottom: 0.3125rem;
   `}
 `;

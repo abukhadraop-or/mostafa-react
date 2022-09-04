@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { IconContext } from "react-icons";
 import { ImPlus } from "react-icons/im";
 import { FaBell } from "react-icons/fa";
 import { TbSearch } from "react-icons/tb";
 import { IoPersonCircle } from "react-icons/io5";
 import { GoThreeBars } from "react-icons/go";
-import HeaderBlock from "components/headerBlock";
-import HeaderButtonList from "components/headerButtonList";
+import { BsXLg } from "react-icons/bs";
+import constants from "utils/constants";
+import colors from "styles/colors";
 import {
   StyledHeader,
   StyledLogoImg,
@@ -17,63 +19,45 @@ import {
   StyledDrawer,
   StyledDrawerList,
   StyledDrawerTitle,
-  StyledDrawerItem,
   StyledWrapper,
+  StyledHeaderButton,
+  StyledIcon,
+  StyledItemsList,
+  StyledItem,
+  StyledListContainer,
 } from "components/header/header.styles";
 
 /**
  * The Header component that has the main routes.
  *
+ * @param {bool} searchIsOpened ???
+ * @param {func} changeSearchIconState ???
+ * @param {object} searchFieldRef ???
+ *
  * @return {Element} A styled component (header).
  */
-function Header() {
+function Header({ searchIsOpened, changeSearchIconState, searchFieldRef }) {
   const [headerTransform, setHeaderTransform] = useState("none");
   const [drawerTransform, setDrawerTransform] = useState("translateX(-100%)");
-  const [buttonListIsHovered, setButtonListIsHovered] = useState({
-    states: {
-      Movies: false,
-      TVShows: false,
-      People: false,
-      More: false,
-    },
-  });
 
-  const desktopLogoImage =
-    "https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg";
-  const mobileLogoImage =
-    "https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg";
+  const [moviesBtnIsHovered, setMoviesBtnIsHovered] = useState(false);
+  const [tvShowsBtnIsHovered, setTVShowsBtnIsHovered] = useState(false);
+  const [peopleBtnIsHovered, setPeopleBtnIsHovered] = useState(false);
+  const [moreBtnIsHovered, setMoreBtnIsHovered] = useState(false);
 
-  const handleButtonHovered = (button, newState) => {
-    if (button === "Movies") {
-      setButtonListIsHovered((prevState) => ({
-        states: {
-          ...prevState.states,
-          Movies: newState,
-        },
-      }));
-    } else if (button === "TVShows") {
-      setButtonListIsHovered((prevState) => ({
-        states: {
-          ...prevState.states,
-          TVShows: newState,
-        },
-      }));
-    } else if (button === "People") {
-      setButtonListIsHovered((prevState) => ({
-        states: {
-          ...prevState.states,
-          People: newState,
-        },
-      }));
-    } else if (button === "More") {
-      setButtonListIsHovered((prevState) => ({
-        states: {
-          ...prevState.states,
-          More: newState,
-        },
-      }));
-    }
-  };
+  const hoveredStates = [
+    moviesBtnIsHovered,
+    tvShowsBtnIsHovered,
+    peopleBtnIsHovered,
+    moreBtnIsHovered,
+  ];
+
+  const hoveredSetters = [
+    setMoviesBtnIsHovered,
+    setTVShowsBtnIsHovered,
+    setPeopleBtnIsHovered,
+    setMoreBtnIsHovered,
+  ];
 
   useEffect(() => {
     var lastScroll = 0;
@@ -83,6 +67,7 @@ function Header() {
 
       if (currentScroll > lastScroll) {
         setHeaderTransform("translate(0%, -100%)");
+        changeSearchIconState(false);
       } else if (currentScroll < lastScroll) {
         setHeaderTransform("none");
       }
@@ -92,227 +77,195 @@ function Header() {
   }, []);
 
   return (
-    <StyledHeader transform={headerTransform}>
-      <HeaderBlock id="logo" mobile={false} desktop={true}>
+    <StyledHeader id="logo" transform={headerTransform}>
+      <StyledHeaderButton mobile={false} desktop={true}>
         <StyledWrapper>
-          <StyledLogoImg src={desktopLogoImage} alt="desktop logo" />
+          <StyledLogoImg
+            src={constants.images.desktopLogoImage}
+            alt="desktop logo"
+          />
         </StyledWrapper>
-      </HeaderBlock>
+      </StyledHeaderButton>
 
       <StyledDrawer transform={drawerTransform} mobile={true} desktop={false}>
-        <StyledDrawerList>
-          <StyledDrawerTitle>Movies</StyledDrawerTitle>
-          <StyledDrawerTitle>TV Shows</StyledDrawerTitle>
-          <StyledDrawerTitle>People</StyledDrawerTitle>
-        </StyledDrawerList>
-
-        <StyledDrawerList>
-          <StyledDrawerItem>Contribution Bible</StyledDrawerItem>
-          <StyledDrawerItem>Apps</StyledDrawerItem>
-          <StyledDrawerItem>Discussions</StyledDrawerItem>
-          <StyledDrawerItem>Leaderboard</StyledDrawerItem>
-          <StyledDrawerItem>Contribute</StyledDrawerItem>
-          <StyledDrawerItem>API</StyledDrawerItem>
-          <StyledDrawerItem>Support</StyledDrawerItem>
-          <StyledDrawerItem>About</StyledDrawerItem>
-        </StyledDrawerList>
-
-        <StyledDrawerList>
-          <StyledDrawerItem>Logout</StyledDrawerItem>
-        </StyledDrawerList>
+        {constants.drawerLists.map((list, index) => {
+          return (
+            <StyledDrawerList key={`drawer list number:${index}`}>
+              {list.map((item, index) => {
+                return (
+                  <StyledDrawerTitle key={`drawer list item number:${index}`}>
+                    {item}
+                  </StyledDrawerTitle>
+                );
+              })}
+            </StyledDrawerList>
+          );
+        })}
       </StyledDrawer>
 
       <StyledRightHeaderBox>
         <StyledButtonsBox mobile={false} desktop={true}>
-          <HeaderBlock
-            onMouseEnter={() => {
-              handleButtonHovered("Movies", true);
-            }}
-            onMouseLeave={() => {
-              handleButtonHovered("Movies", false);
-            }}
-            mobile={false}
-            desktop={true}
-            responsiveMargin={true}
-          >
-            <StyledWrapper>
-              Movies
-              {buttonListIsHovered.states.Movies ? (
-                <HeaderButtonList
-                  handleButtonHovered={handleButtonHovered}
-                  mainTitle="Movies"
-                  items={[
-                    { title: "Popular", onClick: () => {} },
-                    { title: "New Playing", onClick: () => {} },
-                    { title: "Upcoming", onClick: () => {} },
-                    { title: "Top Rated", onClick: () => {} },
-                  ]}
-                />
-              ) : null}
-            </StyledWrapper>
-          </HeaderBlock>
-
-          <HeaderBlock
-            onMouseEnter={() => {
-              handleButtonHovered("TVShows", true);
-            }}
-            onMouseLeave={() => {
-              handleButtonHovered("TVShows", false);
-            }}
-            mobile={false}
-            desktop={true}
-            responsiveMargin={true}
-          >
-            <StyledWrapper>
-              TV Shows
-              {buttonListIsHovered.states.TVShows ? (
-                <HeaderButtonList
-                  handleButtonHovered={handleButtonHovered}
-                  mainTitle="TVShows"
-                  items={[
-                    { title: "Popular", onClick: () => {} },
-                    { title: "Airing Today", onClick: () => {} },
-                    { title: "On TV", onClick: () => {} },
-                    { title: "Top Rated", onClick: () => {} },
-                  ]}
-                />
-              ) : null}
-            </StyledWrapper>
-          </HeaderBlock>
-
-          <HeaderBlock
-            onMouseEnter={() => {
-              handleButtonHovered("People", true);
-            }}
-            onMouseLeave={() => {
-              handleButtonHovered("People", false);
-            }}
-            mobile={false}
-            desktop={true}
-            responsiveMargin={true}
-          >
-            <StyledWrapper>
-              People
-              {buttonListIsHovered.states.People ? (
-                <HeaderButtonList
-                  handleButtonHovered={handleButtonHovered}
-                  mainTitle="People"
-                  items={[{ title: "Popular People", onClick: () => {} }]}
-                />
-              ) : null}
-            </StyledWrapper>
-          </HeaderBlock>
-
-          <HeaderBlock
-            onMouseEnter={() => {
-              handleButtonHovered("More", true);
-            }}
-            onMouseLeave={() => {
-              handleButtonHovered("More", false);
-            }}
-            mobile={false}
-            desktop={true}
-            responsiveMargin={true}
-          >
-            <StyledWrapper>
-              More
-              {buttonListIsHovered.states.More ? (
-                <HeaderButtonList
-                  handleButtonHovered={handleButtonHovered}
-                  mainTitle="More"
-                  items={[
-                    { title: "Discussion", onClick: () => {} },
-                    { title: "Leaderboard", onClick: () => {} },
-                    { title: "Support", onClick: () => {} },
-                    { title: "API", onClick: () => {} },
-                  ]}
-                />
-              ) : null}
-            </StyledWrapper>
-          </HeaderBlock>
+          {constants.headerLists.map((list, index) => {
+            return (
+              <StyledHeaderButton
+                key={`header button number: ${index}`}
+                onMouseEnter={() => {
+                  hoveredSetters[index](true);
+                }}
+                onMouseLeave={() => {
+                  hoveredSetters[index](false);
+                }}
+                desktop={true}
+                mobile={false}
+                responsiveMargin={true}
+              >
+                <StyledWrapper key={`wrapper number: ${index}`}>
+                  {list.title}
+                  {hoveredStates[index] ? (
+                    <StyledListContainer
+                      key={`list container number: ${index}`}
+                    >
+                      <StyledItemsList
+                        key={`item list number: ${index}`}
+                        onMouseEnter={() => {
+                          hoveredSetters[index](true);
+                        }}
+                        onMouseLeave={() => {
+                          hoveredSetters[index](false);
+                        }}
+                      >
+                        {list.items.map((item) => {
+                          return (
+                            <StyledItem key={`header list item: ${item}`}>
+                              {item}
+                            </StyledItem>
+                          );
+                        })}
+                      </StyledItemsList>
+                    </StyledListContainer>
+                  ) : null}
+                </StyledWrapper>
+              </StyledHeaderButton>
+            );
+          })}
         </StyledButtonsBox>
 
-        <HeaderBlock
-          isIcon={true}
-          size={{ mobile: 25, desktop: 30 }}
-          color="white"
-          mobile={true}
+        <StyledHeaderButton
           desktop={false}
+          mobile={true}
           responsiveMargin={true}
         >
+          <StyledIcon size={{ mobile: 25, desktop: 30 }}>
+            <IconContext.Provider value={{ size: "100%", color: colors.white }}>
+              <StyledWrapper>
+                <GoThreeBars
+                  onClick={() => {
+                    setDrawerTransform((prev) =>
+                      prev === "none" ? "translateX(-100%)" : "none"
+                    );
+                  }}
+                />
+              </StyledWrapper>
+            </IconContext.Provider>
+          </StyledIcon>
+        </StyledHeaderButton>
+
+        <StyledHeaderButton desktop={false} mobile={true}>
           <StyledWrapper>
-            <GoThreeBars
-              onClick={() => {
-                setDrawerTransform((prev) =>
-                  prev === "none" ? "translateX(-100%)" : "none"
-                );
-              }}
+            <StyledLogoMobileImg
+              src={constants.images.mobileLogoImage}
+              alt="logo mobile"
             />
           </StyledWrapper>
-        </HeaderBlock>
-
-        <HeaderBlock mobile={true} desktop={false}>
-          <StyledWrapper>
-            <StyledLogoMobileImg src={mobileLogoImage} alt="logo mobile" />
-          </StyledWrapper>
-        </HeaderBlock>
+        </StyledHeaderButton>
 
         <StyledIconsBox>
-          <HeaderBlock
-            isIcon={true}
-            size={{ mobile: 16, desktop: 16 }}
-            color="white"
-            mobile={false}
-            desktop={true}
-            responsiveMargin={true}
-          >
-            <StyledWrapper>
-              <ImPlus />
-            </StyledWrapper>
-          </HeaderBlock>
-
-          <StyledENButton mobile={false} desktop={true}>
-            EN
-          </StyledENButton>
-
-          <HeaderBlock
-            isIcon={true}
-            size={{ mobile: 15, desktop: 17 }}
-            color={"white"}
-            mobile={true}
-            desktop={true}
-            responsiveMargin={true}
-          >
-            <StyledWrapper>
-              <FaBell />
-            </StyledWrapper>
-          </HeaderBlock>
-
-          <HeaderBlock
-            isIcon={true}
-            size={{ mobile: 30, desktop: 35 }}
-            color={"white"}
-            mobile={true}
-            desktop={true}
-            responsiveMargin={true}
-          >
-            <StyledWrapper>
-              <IoPersonCircle />
-            </StyledWrapper>
-          </HeaderBlock>
-
-          <HeaderBlock
-            isIcon={true}
-            size={{ mobile: 20, desktop: 23 }}
-            color={"cyan"}
-            mobile={true}
-            desktop={true}
-            responsiveMargin={true}
-          >
-            <StyledWrapper>
-              <TbSearch />
-            </StyledWrapper>
-          </HeaderBlock>
+          {[
+            {
+              icon: true,
+              desktop: true,
+              mobile: false,
+              responsiveMargin: true,
+              size: { mobile: 16, desktop: 16 },
+              value: { size: "100%", color: colors.white },
+              content: <ImPlus key="plus" />,
+            },
+            {
+              icon: false,
+              content: (
+                <StyledENButton key="en button" mobile={false} desktop={true}>
+                  EN
+                </StyledENButton>
+              ),
+            },
+            {
+              icon: true,
+              desktop: true,
+              mobile: true,
+              responsiveMargin: true,
+              size: { mobile: 15, desktop: 17 },
+              value: { size: "100%", color: colors.white },
+              content: <FaBell key="bell" />,
+            },
+            {
+              icon: true,
+              desktop: true,
+              mobile: true,
+              responsiveMargin: true,
+              size: { mobile: 30, desktop: 35 },
+              value: { size: "100%", color: colors.white },
+              content: <IoPersonCircle key="person" />,
+            },
+            {
+              icon: true,
+              desktop: true,
+              mobile: true,
+              responsiveMargin: true,
+              size: { mobile: 20, desktop: 23 },
+              onClick: () => {
+                changeSearchIconState(!searchIsOpened);
+              },
+              content: searchIsOpened ? (
+                <BsXLg color={colors.white} />
+              ) : (
+                <TbSearch
+                  color="cyan"
+                  key="search"
+                  onClick={() =>
+                    setTimeout(() => {
+                      searchFieldRef.current.focus();
+                    }, 100)
+                  }
+                />
+              ),
+            },
+          ].map((item, index) => {
+            return item.icon ? (
+              <StyledHeaderButton
+                desktop={item.desktop}
+                mobile={item.mobile}
+                responsiveMargin={item.responsiveMargin}
+                key={`header button number: ${index}`}
+                onClick={item.onClick}
+              >
+                <StyledIcon
+                  size={item.size}
+                  key={`header icon number: ${index}`}
+                >
+                  <IconContext.Provider
+                    key={`icon provider number: ${index}`}
+                    value={{ size: "100%" }}
+                  >
+                    <StyledWrapper key={`header wrapper number: ${index}`}>
+                      {item.content}
+                    </StyledWrapper>
+                  </IconContext.Provider>
+                </StyledIcon>
+              </StyledHeaderButton>
+            ) : (
+              item.content
+            );
+          })}
         </StyledIconsBox>
       </StyledRightHeaderBox>
     </StyledHeader>

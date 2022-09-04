@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { media } from "styles/media-query";
+import { mq } from "styles/media-query";
+import colors from "styles/colors";
 
 export const StyledMain = styled.main`
   width: 100%;
@@ -20,7 +21,7 @@ export const StyledMiddleSpace = styled.section`
   justify-content: flex-start;
   align-items: center;
 
-  ${media.desktop`
+  ${mq.desktop`
   flex-direction: row;
   align-items: flex-start;
   justify-content: center;
@@ -47,3 +48,4 @@ export const StyledUpperTitle = styled.div`
   margin-top: 4rem;
   font-size: 1.5rem;
 `;
+

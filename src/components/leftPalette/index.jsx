@@ -1,34 +1,33 @@
 import React, { useState, useRef } from "react";
-import PaletteSlider from "components/paletteSlider";
 import SortTabContents from "components/sortingTab";
 import getData from "services/get-data";
 import PropTypes from "prop-types";
+import { RiArrowRightSLine, RiArrowDownSLine } from "react-icons/ri";
 import {
   StyledButton,
   StyledLeftPalette,
+  StyledPaletteMainBox,
+  StyledPaletteUpperBox,
+  StyledHiddenBox,
 } from "components/leftPalette/left-palette.styles";
 
 /**
  * A container that represents the left palette that has all tools (sort, filter, ...).
  *
- * @param {func} setIsFetchingData A function that change the state of fetching data when the (getData) function is being called.
- * @param {string} baseURL A string that represents the base segment of the main URL for the TMDB website.
- * @param {string} apiKey A string that has the API key from TMDB.
+ * @param {func} changeFetchingDataState A function that change the state of fetching data when the (getData) function is being called.
  * @param {string} sortedBy A string that represents state of the sorting technique of the movies.
- * @param {func} setSortedBy A function that changes the state of the sorting technique of the movies.
- * @param {object} popularMoviesList An object that stores the list of movies and the current page from the API.
- * @param {func} setPopularMoviesList A function that changes the list of movies and the current page from the API.
+ * @param {func} changeSortingTechnique A function that changes the state of the sorting technique of the movies.
+ * @param {func} updateMoviesList A function that changes the list of movies from the API.
+ * @param {func} updateMoviesPage A function that changes the the current page from the API.
  *
  * @return {Element} A styled component (section).
  */
-function Palette({
-  setIsFetchingData,
-  baseURL,
-  apiKey,
+function LeftPalette({
+  changeFetchingDataState,
   sortedBy,
-  setSortedBy,
-  popularMoviesList,
-  setPopularMoviesList,
+  changeSortingTechnique,
+  updateMoviesList,
+  updateMoviesPage,
 }) {
   const sortBoxRef = useRef(null);
   const [searchButtonActive, setSearchButtonActive] = useState(false);
@@ -36,94 +35,98 @@ function Palette({
     "Popularity Descending"
   );
 
-  const [sliderIsOpened, setSliderIsOpened] = useState({
-    states: {
-      Sort: true,
-      Filters: false,
-      WhereToWatch: false,
-    },
-  });
+  const [sortIsOpened, setSortIsOpened] = useState(true);
+  const [filtersIsOpened, setFiltersIsOpened] = useState(false);
+  const [whereToWatchIsOpened, setWhereToWatchIsOpened] = useState(false);
 
-  const sliderClickHandler = (slider) => {
-    if (slider === "Sort") {
-      setSliderIsOpened((prevState) => ({
-        states: {
-          ...prevState.states,
-          Sort: !prevState.states.Sort,
-        },
-      }));
-    } else if (slider === "Filters") {
-      setSliderIsOpened((prevState) => ({
-        states: {
-          ...prevState.states,
-          Filters: !prevState.states.Filters,
-        },
-      }));
-    } else if (slider === "Where To Watch") {
-      setSliderIsOpened((prevState) => ({
-        states: {
-          ...prevState.states,
-          WhereToWatch: !prevState.states.WhereToWatch,
-        },
-      }));
-    }
+  /**
+   * A function that changes the sorting technique and the list of the movies accordingly.
+   */
+  const changeSearchHandler = async () => {
+    changeFetchingDataState(true);
+    const data = await getData(sortedBy, 1);
+    updateMoviesPage(1);
+    updateMoviesList(data);
+    changeFetchingDataState(false);
   };
 
-  const changeSearchHandler = () => {
-    setIsFetchingData(true);
-    setPopularMoviesList((prev) => ({
-      movieList: prev.movieList,
-      moviesPage: 1,
-    }));
+  /**
+   * A function that changes the selected sorting technique from the box.
+   *
+   * @param {string} newSelection The new sorting technique.
+   */
+  const changeBoxSelection = (newSelection) => {
+    setSortBoxSelection(newSelection);
+  };
 
-    setTimeout(async () => {
-      const data = await getData(
-        baseURL,
-        apiKey,
-        sortedBy,
-        popularMoviesList.moviesPage
-      );
-
-      setIsFetchingData(false);
-
-      setPopularMoviesList((prev) => ({
-        movieList: data,
-        moviesPage: prev.moviesPage,
-      }));
-    }, 500);
+  /**
+   * A function that changes the state of the search button (active/inactive).
+   *
+   * @param {bool} newState The new state.
+   */
+  const changeSearchBtnState = (newState) => {
+    setSearchButtonActive(newState);
   };
 
   return (
     <StyledLeftPalette>
-      <PaletteSlider
-        title="Sort"
-        sliderClickHandler={sliderClickHandler}
-        isOpened={sliderIsOpened.states.Sort}
-      >
-        <SortTabContents
-          sortBoxSelection={sortBoxSelection}
-          setSortBoxSelection={setSortBoxSelection}
-          sortBoxRef={sortBoxRef}
-          setSearchButtonActive={setSearchButtonActive}
-          setSortedBy={setSortedBy}
-        />
-      </PaletteSlider>
+      {[
+        {
+          title: "Sort",
+          tab: (
+            <SortTabContents
+              sortBoxSelection={sortBoxSelection}
+              changeBoxSelection={changeBoxSelection}
+              sortBoxRef={sortBoxRef}
+              changeSearchBtnState={changeSearchBtnState}
+              changeSortingTechnique={changeSortingTechnique}
+            />
+          ),
+          isOpened: sortIsOpened,
+          setIsOpened: setSortIsOpened,
+        },
+        {
+          title: "Filters",
+          tab: null,
+          isOpened: filtersIsOpened,
+          setIsOpened: setFiltersIsOpened,
+        },
+        {
+          title: "Where To Watch",
+          tab: null,
+          isOpened: whereToWatchIsOpened,
+          setIsOpened: setWhereToWatchIsOpened,
+        },
+      ].map((slider, index) => {
+        return (
+          <StyledPaletteMainBox key={`main box number: ${index}`}>
+            <StyledPaletteUpperBox
+              key={`upper box number: ${index}`}
+              onClick={() => {
+                slider.setIsOpened((prev) => !prev);
+              }}
+            >
+              <div>{slider.title}</div>
+              {slider.isOpened ? (
+                <RiArrowDownSLine size={24} />
+              ) : (
+                <RiArrowRightSLine size={24} />
+              )}
+            </StyledPaletteUpperBox>
 
-      <PaletteSlider
-        title="Filters"
-        sliderClickHandler={sliderClickHandler}
-        isOpened={sliderIsOpened.states.Filters}
-      ></PaletteSlider>
-
-      <PaletteSlider
-        title="Where To Watch"
-        sliderClickHandler={sliderClickHandler}
-        isOpened={sliderIsOpened.states.WhereToWatch}
-      ></PaletteSlider>
+            {slider.isOpened && (
+              <StyledHiddenBox key={`hidden box number: ${index}`}>
+                {slider.tab}
+              </StyledHiddenBox>
+            )}
+          </StyledPaletteMainBox>
+        );
+      })}
 
       <StyledButton
         searchButtonActive={searchButtonActive}
         onClick={changeSearchHandler}
+        disabled={!searchButtonActive}
       >
         Search
       </StyledButton>
@@ -131,16 +134,12 @@ function Palette({
   );
 }
 
-Palette.defaultProps = {};
-
-Palette.propTypes = {
-  setIsFetchingData: PropTypes.func,
-  baseURL: PropTypes.string.isRequired,
-  apiKey: PropTypes.string.isRequired,
+LeftPalette.propTypes = {
+  changeFetchingDataState: PropTypes.func.isRequired,
   sortedBy: PropTypes.string.isRequired,
-  setSortedBy: PropTypes.func,
-  popularMovies: PropTypes.object.isRequired,
-  setPopularMovies: PropTypes.func.isRequired,
+  changeSortingTechnique: PropTypes.func.isRequired,
+  updateMoviesList: PropTypes.func.isRequired,
+  updateMoviesPage: PropTypes.func.isRequired,
 };
 
-export default Palette;
+export default LeftPalette;

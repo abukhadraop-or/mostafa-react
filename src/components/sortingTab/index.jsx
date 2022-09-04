@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { RiArrowDownSFill } from "react-icons/ri";
+import constants from "utils/constants";
 import {
   StyledTabContainer,
   StyledSection,
@@ -16,18 +17,18 @@ import {
  *
  * @param {object} sortBoxRef A reference object to reach and control the box with the sorting technique selection.
  * @param {string} sortBoxSelection A string that represents the current selection of the sorting technique.
- * @param {func} setSortBoxSelection A function that changes the current sorting technique selection from the box.
- * @param {func} setSortedBy A function that changes global sorting technique state.
- * @param {func} setSearchButtonActive A function that changes the state of the search button (enabled/disabled).
+ * @param {func} changeBoxSelection A function that changes the current sorting technique selection from the box.
+ * @param {func} changeSortingTechnique A function that changes global sorting technique state.
+ * @param {func} changeSearchBtnState A function that changes the state of the search button (enabled/disabled).
  *
  * @return {Element} A styled component (div).
  */
 function SortTabContents({
   sortBoxRef,
   sortBoxSelection,
-  setSortBoxSelection,
-  setSortedBy,
-  setSearchButtonActive,
+  changeBoxSelection,
+  changeSortingTechnique,
+  changeSearchBtnState,
 }) {
   const [isOptionsOpened, setIsOptionsOpened] = useState(false);
 
@@ -48,25 +49,16 @@ function SortTabContents({
 
         {isOptionsOpened ? (
           <StyledSelections>
-            {[
-              "Popularity Descending",
-              "Popularity Ascending",
-              "Rating Descending",
-              "Rating Ascending",
-              "Released Date Descending",
-              "Released Date Ascending",
-              "Title (A-Z)",
-              "Title (Z-A)",
-            ].map((selection, index) => {
+            {Object.keys(constants.sortingTechniques).map((selection, index) => {
               return (
                 <StyledSelectionItem
                   selected={sortBoxSelection}
                   current={selection}
                   key={`${index}${selection}`}
                   onClick={() => {
-                    setSortBoxSelection(selection);
-                    setSortedBy(selection);
-                    setSearchButtonActive(true);
+                    changeBoxSelection(selection);
+                    changeSortingTechnique(selection);
+                    changeSearchBtnState(true);
                     setIsOptionsOpened(false);
                   }}
                 >
@@ -81,14 +73,12 @@ function SortTabContents({
   );
 }
 
-SortTabContents.defaultProps = {};
-
 SortTabContents.propTypes = {
-  sortBoxRef: PropTypes.object,
-  sortBoxSelection: PropTypes.string,
-  setSortBoxSelection: PropTypes.func,
-  setSortedBy: PropTypes.func,
-  setSearchButtonActive: PropTypes.func,
+  sortBoxRef: PropTypes.object.isRequired,
+  sortBoxSelection: PropTypes.string.isRequired,
+  changeBoxSelection: PropTypes.func.isRequired,
+  changeSortingTechnique: PropTypes.func.isRequired,
+  changeSearchBtnState: PropTypes.func.isRequired,
 };
 
 export default SortTabContents;

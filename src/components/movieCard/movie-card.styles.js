@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { media } from "styles/media-query";
+import { mq } from "styles/media-query";
 import colors from "styles/colors";
 
 export const StyledCard = styled.div`
@@ -17,7 +17,7 @@ export const StyledCard = styled.div`
   margin-bottom: 1.875rem;
   max-height: 8.8125rem;
 
-  ${media.desktop`
+  ${mq.desktop`
     width: calc((100vw - 18.25rem - 11.25rem) / 3);
     height: calc(((100vw - 18.25rem - 11.25rem) / 3) * 2.3);
 
@@ -61,7 +61,7 @@ export const StyledRatingImg = styled.div`
   font-size: 0.75rem;
   display: none;
 
-  ${media.desktop`
+  ${mq.desktop`
     display: flex;
   `}
 `;
@@ -129,7 +129,7 @@ export const StyledCornerDots = styled.div`
     color: ${colors.blurBlue};
   }
 
-  ${media.desktop`
+  ${mq.desktop`
     display: flex;
   `}
 `;
@@ -141,7 +141,7 @@ export const StyledPoster = styled.img`
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
 
-  ${media.desktop`
+  ${mq.desktop`
     width: 100%;
     max-width: 100%;
     margin-right: 0rem;
@@ -156,7 +156,7 @@ export const StyledPoster = styled.img`
 export const StyledSubWindow = styled.ul`
   display: none;
 
-  ${media.desktop`
+  ${mq.desktop`
     display: flex;
     width: 8rem;
     height: 10.3125rem;
@@ -267,7 +267,7 @@ export const StyledOverview = styled.div`
   margin-top: 1.25rem;
   display: -webkit-box;
 
-  ${media.desktop`
+  ${mq.desktop`
     display: none;
   `}
 `;

@@ -30,7 +30,8 @@ export const StyledSelectionButton = styled.button`
   align-items: center;
   border: solid 0.0625rem ${colors.darkWhite};
   color: ${colors.darkGray};
-  background-color: ${(props) => (props.IsOpened ? colors.lightGray : "#e4e7eb")};
+  background-color: ${(props) =>
+    props.IsOpened ? colors.lightGray : colors.lightWhite};
   border-radius: 0.5rem;
   padding: 0.5rem;
   overflow: hidden;
@@ -81,13 +82,14 @@ export const StyledSelectionItem = styled.li`
   font-weight: ${(props) =>
     props.current === props.selected ? "bold" : "normal"};
   background: ${(props) =>
-    props.current === props.selected ? "#f2f2f2" : "white"};
+    props.current === props.selected ? colors.lightWhite : colors.white};
   cursor: pointer;
 
   &:hover {
     background: ${(props) =>
-      props.current === props.selected ? colors.skiBlue : "white"};
-    color: ${(props) => (props.current === props.selected ? "white" : "black")};
+      props.current === props.selected ? colors.skiBlue : colors.white};
+    color: ${(props) =>
+      props.current === props.selected ? colors.white : colors.black};
   }
 
   transition: 0.2s ease;

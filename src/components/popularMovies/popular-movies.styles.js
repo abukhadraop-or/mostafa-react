@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { media } from "styles/media-query";
+import { mq } from "styles/media-query";
 import colors from "styles/colors";
 
 const rotate = keyframes`
@@ -53,7 +53,7 @@ export const StyledMovieCards = styled.section`
   flex-direction: column;
   justify-content: flex-start;
 
-  ${media.desktop`
+  ${mq.desktop`
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Header from "components/header";
-import Palette from "components/leftPalette";
+import LeftPalette from "components/leftPalette";
 import PopularMovies from "components/popularMovies";
 import Footer from "components/footer";
-
+import SearchContainer from "components/searchContainer";
 import {
   StyledMain,
   StyledMiddleSpace,
@@ -19,39 +19,103 @@ import {
 function App() {
   const [isFetchingData, setIsFetchingData] = useState(false);
   const [sortedBy, setSortedBy] = useState("Popularity Descending");
-  const [popularMoviesList, setPopularMoviesList] = useState({
-    movieList: [],
-    moviesPage: 1,
-  });
+  const [popularMoviesList, setPopularMoviesList] = useState([]);
+  const [popularMoviesPage, setPopularMoviesPage] = useState(0);
 
-  const apiKey = "0b7a45b84863262f053eb799d51f84fb";
-  const baseURL = "https://api.themoviedb.org";
+  const searchFieldRef = useRef(null);
+  const [searchIsFilled, setSearchIsFilled] = useState(false);
+  const [searchIsOpened, setSearchIsOpened] = useState(false);
+
+  /**
+   * A function that changes the sorting technique.
+   *
+   * @param {string} newTechnique The new sorting technique.
+   */
+  const changeSortingTechnique = (newTechnique) => {
+    setSortedBy(newTechnique);
+  };
+
+  /**
+   * A function that changes the state that indicates if there are data being fetching currently.
+   *
+   * @param {bool} newState The new sorting technique.
+   */
+  const changeFetchingDataState = (newState) => {
+    setIsFetchingData(newState);
+  };
+
+  /**
+   * A function that updates the list of movies.
+   *
+   * @param {Array} newData The new list of movies.
+   */
+  const updateMoviesList = (newData) => {
+    setPopularMoviesList(newData);
+  };
+
+  /**
+   * A function that changes the number of page for fetching movies from the API.
+   *
+   * @param {number} newPage The new page number.
+   */
+  const updateMoviesPage = (newPage) => {
+    setPopularMoviesPage(newPage);
+  };
+
+  /**
+   * A function that updates the state (searchIsFilled) according to the search field's content.
+   */
+  const checkInput = () => {
+    searchFieldRef.current.value !== ""
+      ? setSearchIsFilled(true)
+      : setSearchIsFilled(false);
+  };
+
+  /**
+   * A function that changes the state of the X icon of the search.
+   *
+   * @param {bool} newState The new state.
+   */
+  const changeSearchIconState = (newState) => {
+    setSearchIsOpened(newState);
+  };
 
   return (
     <StyledMain>
       <StyledWorkspace>
-        <Header />
+        <Header
+          searchIsOpened={searchIsOpened}
+          changeSearchIconState={changeSearchIconState}
+          searchFieldRef={searchFieldRef}
+        />
 
-        <StyledUpperTitle />
+        <StyledUpperTitle>Popular Movies</StyledUpperTitle>
+
+        {searchIsOpened && (
+          <SearchContainer
+            searchFieldRef={searchFieldRef}
+            searchIsFilled={searchIsFilled}
+            checkInput={checkInput}
+            popularMoviesList={popularMoviesList}
+          />
+        )}
 
         <StyledMiddleSpace>
-          <Palette
-            setIsFetchingData={setIsFetchingData}
-            apiKey={apiKey}
-            baseURL={baseURL}
+          <LeftPalette
             sortedBy={sortedBy}
-            setSortedBy={setSortedBy}
-            popularMoviesList={popularMoviesList} 
-            setPopularMoviesList={setPopularMoviesList}
+            changeFetchingDataState={changeFetchingDataState}
+            changeSortingTechnique={changeSortingTechnique}
+            updateMoviesList={updateMoviesList}
+            updateMoviesPage={updateMoviesPage}
           />
           <PopularMovies
-            isFetchingData={isFetchingData}
-            setIsFetchingData={setIsFetchingData}
-            apiKey={apiKey}
-            baseURL={baseURL}
             sortedBy={sortedBy}
-            popularMoviesList={popularMoviesList} 
-            setPopularMoviesList={setPopularMoviesList}
+            popularMoviesList={popularMoviesList}
+            popularMoviesPage={popularMoviesPage}
+            isFetchingData={isFetchingData}
+            changeFetchingDataState={changeFetchingDataState}
+            updateMoviesList={updateMoviesList}
+            updateMoviesPage={updateMoviesPage}
           />
         </StyledMiddleSpace>
       </StyledWorkspace>
